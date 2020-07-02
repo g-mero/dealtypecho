@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qss/global.qss</file>
+        <file>languages/dealtypecho_zh_CN.qm</file>
+    </qresource>
+</RCC>
