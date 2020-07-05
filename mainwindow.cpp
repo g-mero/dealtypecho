@@ -9,6 +9,7 @@
 #include <QIntValidator>
 #include <QTranslator>
 
+
 #include "config.h"
 #include "showinfo.h"
 
@@ -22,20 +23,29 @@ MainWindow::MainWindow(QWidget *parent)
     translator.load(":/languages/dealtypecho_zh_CN.qm");
     qApp->installTranslator(&translator);
     ui->retranslateUi(this);
+    ui->tabWidget->setCurrentIndex(0);
     ui->lineEdit_dbport->setValidator( new QIntValidator(0, 9999999, this) );
     //获取用户桌面路径
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     ui->lineEdit_outpath->setText(desktopPath);
     //读取config
     QStringList info = Config().Get();
-    if(!info.at(0).isEmpty()) {
+    if(!info.at(0).isEmpty() && !info.at(info.length()-1).isEmpty()) {
         ui->lineEdit_dbadd->setText(info.at(0));
         ui->lineEdit_dbport->setText(info.at(1));
         ui->lineEdit_dbname->setText(info.at(2));
-        ui->lineEdit_dbuser->setText(info.at(3));
-        ui->lineEdit_dbpass->setText(info.at(4));
-        ui->lineEdit_outpath->setText(info.at(5));
+        ui->lineEdit_prefix->setText(info.at(3));
+        ui->lineEdit_dbuser->setText(info.at(4));
+        ui->lineEdit_dbpass->setText(info.at(5));
+        ui->lineEdit_outpath->setText(info.at(6));
     }
+
+
+
+    //检查更新
+    update = new softUpdate();
+    update->run();
+
     connect(ui->pushButton_quit, &QPushButton::clicked, this, &QWidget::close);
     connect(ui->pushButton_getpath, &QPushButton::clicked, this, [=](){
         QString outPath = QFileDialog::getExistingDirectory(this,"选择输出文件夹", ui->lineEdit_outpath->text());
@@ -46,21 +56,19 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
     connect(ui->actionabout, &QAction::triggered, this, [=](){
-        QMessageBox::information(this, "关于", "作者: gmero\n博客：https://gemro.com\n版本：develop 0.0.1\n");
+        QMessageBox::information(this, "关于", "作者: gmero\n博客：https://gmero.com\n版本：develop 0.0.1\n");
         qDebug() << "cc";
     });
-    connect(ui->pushButton_gen, &QPushButton::clicked, this, [=](){
 
+    connect(ui->pushButton_gen, &QPushButton::clicked, this, [=](){
         ui->statusbar->showMessage(tr("Database Connecting..."));
         QString dbAdd = ui->lineEdit_dbadd->text();
         QString dbName = ui->lineEdit_dbname->text();
         QString dbUser = ui->lineEdit_dbuser->text();
         QString dbPass = ui->lineEdit_dbpass->text();
         QString outPath = ui->lineEdit_outpath->text();
+        QString preFix = ui->lineEdit_prefix->text();
         int dbPort = ui->lineEdit_dbport->text().toInt();
-        QStringList info;
-        info << dbAdd << ui->lineEdit_dbport->text() << dbName <<dbUser << dbPass << outPath;
-        Config().Set(info);
         QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
         qDebug()<<db.drivers();
         db.setHostName(dbAdd);//数据库地址
@@ -70,47 +78,34 @@ MainWindow::MainWindow(QWidget *parent)
         db.setPassword(dbPass);//密码
         if (!db.isValid())
         {
-            ui->statusbar->showMessage(tr("Failed to connect."), 2000);
+            ui->statusbar->showMessage(tr("Failed to connect."), 4000);
             QMessageBox::critical(0, QObject::tr("Database"), db.lastError().text());
         }
 
         if(!db.open())
         {
-            ui->statusbar->showMessage(tr("Failed to connect."), 2000);
+            ui->statusbar->showMessage(tr("Failed to connect."), 4000);
             QMessageBox::critical(0, QObject::tr("Database"), db.lastError().text());
             return ;
         }
         else
         {
-            ui->statusbar->showMessage(tr("Database connect sucessed!!!"));
-            QStringList titleList;
-            QSqlQuery * query = new QSqlQuery;
-            QString sql = "SELECT title FROM typecho_contents WHERE type = 'post'";
-            query->exec(sql);
-            while(query->next())
-            {
-                titleList.append(query->value(0).toString());
-            }
-            showinfo * s = new showinfo();
-            s->printTitle(titleList);
-            s->setWindowModality(Qt::ApplicationModal);
-            s->setAttribute(Qt::WA_DeleteOnClose);
-            connect(s,&showinfo::sendsignal, this, [=](int a){
-                qDebug() << a;
-                QString sql2 = "SELECT text FROM typecho_contents WHERE type = 'post'";
-                QString sql3 = "SELECT text FROM typecho_contents WHERE created = 1592305500";
-                query->exec(sql3);
-                while(query->next())
-                {
-                    sql3 = query->value(0).toString();
-                }
-                reText().toHexoButterfly(&sql3);
-                QFile file(outPath + "/bf5tobf2.md");
-                file.open(QIODevice::WriteOnly | QIODevice::Text);
-                file.write(sql3.toUtf8());
-                file.close();
-            });
+            bool a[4];
+            a[0] = ui->cb_dofixpound->isChecked();
+            a[1] = ui->cb_dofixenter->isChecked();
+            a[2] = ui->cb_dofixnodes->isChecked();
+            a[3] = ui->cb_dofixalbum->isChecked();
+            showinfo * s = new showinfo(db, 0, preFix, outPath, a);
             s->show();
+            s->getdate();
+            ui->statusbar->showMessage(tr("Database connect sucessed!!!"));
+
+
+
+
+
+
+
         }
     });
 }
@@ -120,3 +115,42 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_btn_confirm_clicked()
+{
+    if(ui->cbox_saveset->isChecked()) {
+        QString dbAdd = ui->lineEdit_dbadd->text();
+        QString dbName = ui->lineEdit_dbname->text();
+        QString dbUser = ui->lineEdit_dbuser->text();
+        QString dbPass = ui->lineEdit_dbpass->text();
+        QString outPath = ui->lineEdit_outpath->text();
+        QString preFix = ui->lineEdit_prefix->text();
+        QStringList info;
+        info << dbAdd << ui->lineEdit_dbport->text() << dbName << preFix << dbUser << dbPass << outPath;
+        Config().Set(info);
+    }
+    QMessageBox::information(this, "消息", tr("Database set up successfully !!!"));
+
+}
+
+void MainWindow::on_pushButton_quit_2_clicked()
+{
+    close();
+}
+
+void MainWindow::on_cb_dofixenter_stateChanged(int arg1)
+{
+    if (arg1 == 0) {
+        ui->cb_dofixalbum->setChecked(false);
+        ui->cb_dofixalbum->setEnabled(false);
+        ui->cb_dofixhtml->setChecked(false);
+        ui->cb_dofixhtml->setEnabled(false);
+        ui->cb_dofixnodes->setChecked(false);
+        ui->cb_dofixnodes->setEnabled(false);
+    }
+    else if(arg1 == 2) {
+        ui->cb_dofixalbum->setEnabled(1);
+        ui->cb_dofixhtml->setEnabled(1);
+        ui->cb_dofixnodes->setEnabled(1);
+    }
+}

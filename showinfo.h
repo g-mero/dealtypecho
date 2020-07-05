@@ -2,6 +2,8 @@
 #define SHOWINFO_H
 
 #include <QWidget>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
 
 namespace Ui {
 class showinfo;
@@ -12,16 +14,22 @@ class showinfo : public QWidget
     Q_OBJECT
 
 public:
-    explicit showinfo(QWidget *parent = nullptr);
+    explicit showinfo(QSqlDatabase in_db, QWidget *parent = nullptr, QString in_preFix = "typecho_", QString in_outpath = "", bool b[4] = {});
     ~showinfo();
     int sig;
-    void printTitle(QStringList titles);
+    void getdate();
+    void printTitle();
 
-signals:
-    void sendsignal(int);
+private slots:
+    void on_btn_select_clicked();
+    void savetofile();
 
 private:
     Ui::showinfo *ui;
+    QStringList cids, mids, titleList;
+    QSqlDatabase db;
+    QString preFix, outPath;
+    bool a[4];
 };
 
 #endif // SHOWINFO_H

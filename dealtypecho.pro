@@ -16,26 +16,37 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    article.cpp \
     config.cpp \
     main.cpp \
     mainwindow.cpp \
+    progdilg.cpp \
     retext.cpp \
-    showinfo.cpp
+    selectdialog.cpp \
+    showinfo.cpp \
+    softupdate.cpp
 
 HEADERS += \
+    article.h \
     config.h \
     mainwindow.h \
+    progdilg.h \
     retext.h \
-    showinfo.h
+    selectdialog.h \
+    showinfo.h \
+    softupdate.h
 
 TRANSLATIONS += \
     dealtypecho_zh_CN.ts
 
 FORMS += \
     mainwindow.ui \
+    progdilg.ui \
+    selectdialog.ui \
     showinfo.ui
 
-QT += sql
+QT += sql \
+    network
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

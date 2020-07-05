@@ -45,7 +45,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="tabsClosable">
        <bool>false</bool>
@@ -58,7 +58,7 @@
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>DBconf</string>
+        <string>database</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -126,7 +126,7 @@
             </widget>
            </item>
            <item row="3" column="2" colspan="2">
-            <widget class="QLineEdit" name="lineEdit">
+            <widget class="QLineEdit" name="lineEdit_prefix">
              <property name="text">
               <string>typecho_</string>
              </property>
@@ -222,7 +222,7 @@
             </spacer>
            </item>
            <item row="3" column="1">
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="label_prefix">
              <property name="text">
               <string>prefix</string>
              </property>
@@ -264,9 +264,9 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="btn_connecttest">
+            <widget class="QPushButton" name="btn_confirm">
              <property name="text">
-              <string>connectTest</string>
+              <string>confirm</string>
              </property>
             </widget>
            </item>
@@ -316,7 +316,7 @@
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
-        <string>transform</string>
+        <string>articles</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="2" column="0">
@@ -379,30 +379,52 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QRadioButton" name="radioButton">
+            <widget class="QCheckBox" name="cb_dofixpound">
              <property name="text">
-              <string>RadioButton</string>
+              <string>fix pound</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButton_2">
+            <widget class="QCheckBox" name="cb_dofixenter">
              <property name="text">
-              <string>RadioButton</string>
+              <string>remove \r</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButton_3">
+            <widget class="QCheckBox" name="cb_dofixnodes">
              <property name="text">
-              <string>RadioButton</string>
+              <string>transform ?&gt; to {%note ?%}{%end note}</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButton_4">
+            <widget class="QCheckBox" name="cb_dofixalbum">
              <property name="text">
-              <string>RadioButton</string>
+              <string>tranform [album] to {% gallery %}</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cb_dofixhtml">
+             <property name="text">
+              <string>tranform html code</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -464,9 +486,9 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="pushButton_quit_2">
              <property name="text">
-              <string>PushButton</string>
+              <string>quit</string>
              </property>
             </widget>
            </item>
@@ -503,6 +525,27 @@
          </spacer>
         </item>
        </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>comments</string>
+       </attribute>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>261</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string># buliding...</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::MarkdownText</enum>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>

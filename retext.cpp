@@ -7,9 +7,6 @@ reText::reText()
 
 void reText::toHexoButterfly(QString * text)
 {
-    //添加头部
-    *text = "---\nlayout: posts\ntitle: 测试\ndate: 2020-06-29 00:53:34\nupdated: 2020-06-29 10:20:50\ntags: 网站建设\ncategories: 网站建设\nkeywords: 测试,hexo\ndescription: 这只是一个测试文章\ntop_img: https://www.gmero.com/usr/themes/handsome/usr/img/sj/1.jpg\ncover: https://www.gmero.com/usr/themes/handsome/usr/img/sj/1.jpg\n---\n"
-            + *text;
     // 删除<!--markdown-->
     *text = text->remove("<!--markdown-->");
     fixPound(text);
@@ -18,10 +15,6 @@ void reText::toHexoButterfly(QString * text)
     transAlbums(text);
 }
 
-void reText::addHexoHead(QString *text)
-{
-    ;
-}
 
 // 修复#
 void reText::fixPound(QString *text)
@@ -60,10 +53,13 @@ void reText::transSpeNodes(QString *text)
         i = text->indexOf("%}\n", i);
         if(i > -1) {
             i = text->indexOf("\n", i+3);
+            if(i == -1) {
+                *text += "\n{% endnote %}";
+            } else {
             text->insert(i, "\n{% endnote %}");
             i += 16;
+            }
         }
-        //qDebug() << i;
     }
 }
 
