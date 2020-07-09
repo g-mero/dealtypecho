@@ -9,8 +9,8 @@
 #include "progdilg.h"
 #include "retext.h"
 #include "article.h"
-showinfo::showinfo( QSqlDatabase in_db, QWidget *parent, QString in_preFix, QString in_outpath, bool b[4]) :
-    QWidget(parent),
+showinfo::showinfo( QSqlDatabase in_db, QWidget *parent, QString in_preFix, QString in_outpath, bool b[5]) :
+    QDialog(parent),
     ui(new Ui::showinfo)
 {
     ui->setupUi(this);
@@ -22,8 +22,9 @@ showinfo::showinfo( QSqlDatabase in_db, QWidget *parent, QString in_preFix, QStr
     a[1] = b[1];
     a[2] = b[2];
     a[3] = b[3];
-    setWindowModality(Qt::ApplicationModal);
-    setAttribute(Qt::WA_DeleteOnClose);
+    a[4] = b[4];
+    this->setModal(true);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 //    connect(ui->btn_confirm, &QPushButton::clicked, this, [=](){
 //        emit this->sendsignal(cids, mids, se);
 //    });
@@ -189,6 +190,7 @@ void showinfo::savetofile()
         if(a[1]) reText().fixEnter(&text);
         if(a[2]) reText().transSpeNodes(&text);
         if(a[3]) reText().transAlbums(&text);
+        if(a[4]) reText().fixButton(&text);
         essay.text = text;
         progressdlg->addText(essay.save(outPath) + tr(" create successful."));
         progressdlg->setValue(i+1);

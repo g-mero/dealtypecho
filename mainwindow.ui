@@ -31,6 +31,10 @@
   <property name="windowTitle">
    <string>typecho文章导出</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/favicon.ico</normaloff>:/favicon.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -419,9 +423,9 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="cb_dofixhtml">
+            <widget class="QCheckBox" name="cb_dofixbutton">
              <property name="text">
-              <string>tranform html code</string>
+              <string>tranform button</string>
              </property>
              <property name="checked">
               <bool>true</bool>
@@ -571,11 +575,6 @@
    </widget>
    <addaction name="menu"/>
   </widget>
-  <action name="action">
-   <property name="text">
-    <string>aaa</string>
-   </property>
-  </action>
   <action name="actionabout">
    <property name="text">
     <string>about</string>
@@ -587,6 +586,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

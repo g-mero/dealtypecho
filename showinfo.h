@@ -1,7 +1,7 @@
 #ifndef SHOWINFO_H
 #define SHOWINFO_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 
@@ -9,7 +9,7 @@ namespace Ui {
 class showinfo;
 }
 
-class showinfo : public QWidget
+class showinfo : public QDialog
 {
     Q_OBJECT
 
@@ -29,7 +29,7 @@ private:
     QStringList cids, mids, titleList;
     QSqlDatabase db;
     QString preFix, outPath;
-    bool a[4];
+    bool a[5];
 };
 
 #endif // SHOWINFO_H

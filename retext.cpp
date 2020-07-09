@@ -5,16 +5,6 @@ reText::reText()
 
 }
 
-void reText::toHexoButterfly(QString * text)
-{
-    // 删除<!--markdown-->
-    *text = text->remove("<!--markdown-->");
-    fixPound(text);
-    fixEnter(text);
-    transSpeNodes(text);
-    transAlbums(text);
-}
-
 
 // 修复#
 void reText::fixPound(QString *text)
@@ -95,6 +85,36 @@ void reText::transAlbums(QString *text)
     }
     text->replace("[album]", "{% gallery %}");
     text->replace("[/album]", "{% endgallery %}");
+}
+
+//对按钮进行转化
+void reText::fixButton(QString *text)
+{
+    int i = 0;
+    while(i > -1) {
+        int a = text->indexOf("[button color=", i);
+        int b = text->indexOf("[/button]", a);
+        if(a == -1 || b == -1) return;
+        i = b + 8;
+        QString tmpStr = text->mid(a, b - a);
+        text->remove(a, b - a + 9);
+        int j = tmpStr.indexOf("color=") + 7;
+        int t = tmpStr.indexOf('"', j);
+        QString color = tmpStr.mid(j, t - j);
+        if(color == "info") color = "blue";
+        else if(color == "success") color = "green";
+        else if(color == "warning") color = "orange";
+        else if(color == "danger") color = "red";
+        else color = "";
+        j = tmpStr.indexOf("url=", j) + 5;
+        t = tmpStr.indexOf('"', j);
+        qDebug() << t << "   "<< tmpStr;
+        QString url = tmpStr.mid(j, t - j);
+        j = tmpStr.indexOf("]", j) + 1;
+        QString content = tmpStr.mid(j);
+        text->insert(a, "{% btn '" + url + "'," + content +
+                     ",far fa-hand-point-right," + color + " larger %}");
+    }
 }
 
 reText::~reText()

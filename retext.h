@@ -10,12 +10,11 @@ class reText
 public:
     reText();
     ~reText();
-    void toHexoButterfly(QString *text);
-    void addHexoHead(QString *text);
     void fixPound(QString *text);
     void fixEnter(QString *text);
     void transSpeNodes(QString *text);
     void transAlbums(QString *text);
+    void fixButton(QString *text);
 };
 
 #endif // RETEXT_H

@@ -90,22 +90,16 @@ MainWindow::MainWindow(QWidget *parent)
         }
         else
         {
-            bool a[4];
+            bool a[5];
             a[0] = ui->cb_dofixpound->isChecked();
             a[1] = ui->cb_dofixenter->isChecked();
             a[2] = ui->cb_dofixnodes->isChecked();
             a[3] = ui->cb_dofixalbum->isChecked();
-            showinfo * s = new showinfo(db, 0, preFix, outPath, a);
+            a[4] = ui->cb_dofixbutton->isChecked();
+            showinfo * s = new showinfo(db, this, preFix, outPath, a);
             s->show();
             s->getdate();
             ui->statusbar->showMessage(tr("Database connect sucessed!!!"));
-
-
-
-
-
-
-
         }
     });
 }
@@ -143,14 +137,14 @@ void MainWindow::on_cb_dofixenter_stateChanged(int arg1)
     if (arg1 == 0) {
         ui->cb_dofixalbum->setChecked(false);
         ui->cb_dofixalbum->setEnabled(false);
-        ui->cb_dofixhtml->setChecked(false);
-        ui->cb_dofixhtml->setEnabled(false);
+        ui->cb_dofixbutton->setChecked(false);
+        ui->cb_dofixbutton->setEnabled(false);
         ui->cb_dofixnodes->setChecked(false);
         ui->cb_dofixnodes->setEnabled(false);
     }
     else if(arg1 == 2) {
         ui->cb_dofixalbum->setEnabled(1);
-        ui->cb_dofixhtml->setEnabled(1);
+        ui->cb_dofixbutton->setEnabled(1);
         ui->cb_dofixnodes->setEnabled(1);
     }
 }
