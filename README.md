@@ -7,7 +7,9 @@ github开源地址：https://github.com/g-mero/dealtypecho
 ## 如何使用
 加下载下来的压缩包解压，运行其中的dealtypecho.exe
 首先输入数据库信息：
+
 ![](https://cdn.jsdelivr.net/gh/g-mero/gmero@master/img/20200709165204.png)
+
 到文章导出栏，选择附加选项：
  - 修复#是指将typecho文章中不符合hexo规范的#写法修复（再typecho中允许#后不接空格以及# 文字 # 的不符合规范标题写法）
  - 删除回车符是删除\r标识,可选项，目的是修复行与行间距较大的问题，剩下几个选项依赖该选项
