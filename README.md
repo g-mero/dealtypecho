@@ -1,7 +1,9 @@
 > 借着学习QT的机会，开发了这个转换软件，主要功能是将typecho网站数据库中的文章信息导出为适用于hexo的makedown文件。
+
+注意：这个项目不会再有更新了，可用性未知，我自己都看不懂我自己写的代码了，可以看看issue里面有没有你问的问题，问我我也不知道。
+
 ## 相关连接
-下载地址：https://pan.gmero.com/projects/dealtypecho/release
-         https://github.com/g-mero/dealtypecho/releases
+下载地址：https://github.com/g-mero/dealtypecho/releases
 github开源地址：https://github.com/g-mero/dealtypecho
 
 ## 如何使用
